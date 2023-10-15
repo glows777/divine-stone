@@ -40,7 +40,7 @@ const Navbar = () => {
         {isAuthenticated && !isLoading && (
           <>
             <Button variant="ghost" size="sm" asChild>
-              <Link href="/document">Enter Divine Stone</Link>
+              <Link href="/documents">Enter Divine Stone</Link>
             </Button>
             <UserButton afterSignOutUrl="/" />
           </>
