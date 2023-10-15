@@ -1,4 +1,5 @@
 import Heading from './_components/heading'
+import Heroes from './_components/heroes'
 
 const MarketingPage = () => {
     return (
@@ -7,6 +8,7 @@ const MarketingPage = () => {
                 mid:justify-start text-center gap-y-8 px-6 flex-1 pb-10"
             >
                 <Heading />
+                <Heroes />
             </div>
         </div>
     )

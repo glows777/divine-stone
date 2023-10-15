@@ -1,3 +1,5 @@
+import React from 'react'
+
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
@@ -12,15 +14,15 @@ export const metadata: Metadata = {
       {
         media: '(prefers-color-scheme: light)',
         url: '/apple.svg',
-        href: '/apple.svg'
+        href: '/apple.svg',
       },
       {
         media: '(prefers-color-scheme: dark)',
         url: '/apple-fill.svg',
-        href: '/apple-fill.svg'
-      }
-    ]
-  }
+        href: '/apple-fill.svg',
+      },
+    ],
+  },
 }
 
 export default function RootLayout({

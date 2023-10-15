@@ -1,5 +1,5 @@
 {
-  "extends": ["next/core-web-vitals"],
+  "extends": ["next",  "next/core-web-vitals", "eslint:recommended"],
   "rules": {
     "semi": [2, "never"],
     "quotes": [2, "single"]
