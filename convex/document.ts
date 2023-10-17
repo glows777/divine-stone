@@ -113,6 +113,7 @@ export const getTrash = query({
       .query('documents')
       .withIndex('by_user', (q) => q.eq('userId', userId))
       .filter((q) => q.eq(q.field('isArchived'), true))
+      .order('desc')
       .collect()
 
     return documents
