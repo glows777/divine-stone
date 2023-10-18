@@ -1,3 +1,4 @@
 import { useScrollTop } from './use-scroll-top'
+import { useSearch } from './use-search'
 
-export { useScrollTop }
+export { useScrollTop, useSearch }

@@ -27,11 +27,13 @@ import Item from './item'
 import { toast } from 'sonner'
 import DocumentList from './document-list'
 import TrashBox from './trash-box'
+import { useSearch } from '@/hooks'
 
 const Navigation = () => {
   const isMobile = useMediaQuery('(max-width: 768px)')
   const pathname = usePathname()
   const create = useMutation(api.document.create)
+  const onOpen = useSearch((store) => store.onOpen)
 
   const isResizingRef = useRef(false)
   const sidebarRef = useRef<ElementRef<'aside'>>(null)
@@ -146,7 +148,7 @@ const Navigation = () => {
         </div>
         <div>
           <UserItem />
-          <Item label="search" icon={SearchIcon} isSearch />
+          <Item onClick={onOpen} label="search" icon={SearchIcon} isSearch />
           <Item label="setting" icon={SettingsIcon} />
           <Item onClick={handleCreate} label="New page" icon={PlusCircle} />
         </div>
