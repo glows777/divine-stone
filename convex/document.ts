@@ -225,3 +225,74 @@ export const getSearch = query({
     return documents
   },
 })
+
+export const getById = query({
+  args: {
+    documentId: v.id('documents')
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity()
+    const document = await ctx.db.get(args.documentId)
+
+    // * 思路
+    // * 先根据 documentId 找到 文档
+    // * 找不到，throw Not found
+    // * 判断是否是 公开以及未删除，因为如果公开，他人可以直接在不登录 查看该文章
+    // * 是，则直接返回，否则继续
+    // * 判断 是否登陆
+    // * 未登录，则 throw Not authenticated
+    // * 已登录，继续判断 当前用户是不是文档作者
+    // * 是，代表 是作者，拥有该 文档 全部权限 返回 document
+    // * 否则，throw Unauthorized
+
+    if (!document) {
+      throw new Error('Not found')
+    }
+
+    if (document.isPublished && !document.isArchived) {
+      return document
+    }
+    if (!identity) {
+      throw new Error('Not authenticated')
+    }
+    const userId = identity.subject
+
+    if (document.userId !== userId) {
+      throw new Error('Unauthorized')
+    }
+
+    return document
+  }
+})
+
+export const update = mutation({
+  args: {
+    id: v.id('documents'),
+    title: v.optional(v.string()),
+    content: v.optional(v.string()),
+    coverImage: v.optional(v.string()),
+    icon: v.optional(v.string()),
+    isPublished: v.optional(v.boolean()),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity()
+    if (!identity) {
+      throw new Error('Unauthenticated')
+    }
+
+    const userId = identity.subject
+    const { id, ...rest } = args
+
+    const existingDocument = await ctx.db.get(id)
+
+    if (!existingDocument) {
+      throw new Error('Not found')
+    }
+    if (existingDocument.userId !== userId) {
+      throw new Error('Unauthorized')
+    }
+
+    const document = await ctx.db.patch(id, rest)
+    return document
+  }
+})
