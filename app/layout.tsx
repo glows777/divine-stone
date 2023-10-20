@@ -47,7 +47,7 @@ export default function RootLayout({
             disableTransitionOnChange
             storageKey="divine-stone-theme"
           >
-            <Toaster position="top-center" />
+            <Toaster position="bottom-center" />
             {children}
             <ModalProvider />
           </ThemeProvider>
