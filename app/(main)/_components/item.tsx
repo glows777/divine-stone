@@ -75,6 +75,7 @@ const Item = ({
       success: 'Note moved to trash!',
       error: 'Failed to archive note.',
     })
+    router.push('/documents')
   }
   const onCreate = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation()

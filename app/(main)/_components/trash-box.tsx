@@ -20,6 +20,9 @@ const TrashBox = () => {
   const remove = useMutation(api.document.remove)
 
   const [search, setSearch] = useState('')
+  const filteredDocuments = documents?.filter((document) => {
+    return document.title.toLowerCase().includes(search.toLowerCase())
+  })
 
   const onClick = (documentId: Id<'documents'>) => {
     router.push(`/documents/${documentId}`)
@@ -80,7 +83,7 @@ const TrashBox = () => {
           <p className=" hidden last:block text-xs text-center text-muted-foreground">
             No documents found
           </p>
-          {documents.map((document) => (
+          {filteredDocuments?.map((document) => (
             <div
               key={document._id}
               role="button"
