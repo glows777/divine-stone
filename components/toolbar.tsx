@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button'
 import { api } from '@/convex/_generated/api'
 
 import IconPicker from './icon-picker'
+import { useCoverImage } from '@/hooks'
 
 interface ToolbarProps {
   initialData: Doc<'documents'>
@@ -19,13 +20,14 @@ interface ToolbarProps {
 const Toolbar = ({ initialData, preview }: ToolbarProps) => {
   const update = useMutation(api.document.update)
   const removeIcon = useMutation(api.document.removeIcon)
+  const onOpenUploadCoverImage = useCoverImage(store => store.onOpen)
 
   const inputRef = useRef<ElementRef<'textarea'>>(null)
   const [isEditing, setIsEditing] = useState(false)
   const [title, setTitle] = useState(initialData.title)
 
-  const onIconSelect = (icon: string) => {
-    update({
+  const onIconSelect = async (icon: string) => {
+    await update({
       id: initialData._id,
       icon,
     })
@@ -52,9 +54,9 @@ const Toolbar = ({ initialData, preview }: ToolbarProps) => {
     }
   }
 
-  const onChange = (title: string) => {
+  const onChange = async (title: string) => {
     setTitle(title)
-    update({
+    await update({
       id: initialData._id,
       title,
     })
@@ -91,7 +93,6 @@ const Toolbar = ({ initialData, preview }: ToolbarProps) => {
         {!initialData.icon && !preview && (
           <IconPicker asChild onChange={onIconSelect}>
             <Button
-              onClick={() => {}}
               size="sm"
               variant="outline"
               className=" text-muted-foreground text-xs"
@@ -103,7 +104,7 @@ const Toolbar = ({ initialData, preview }: ToolbarProps) => {
         )}
         {!initialData.coverImage && !preview && (
           <Button
-            onClick={() => {}}
+            onClick={onOpenUploadCoverImage}
             className="text-muted-foreground text-xs"
             variant="outline"
             size="sm"

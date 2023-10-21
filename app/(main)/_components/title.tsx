@@ -33,9 +33,9 @@ const Title = ({ initialData }: TitleProps) => {
     setIsEditing(false)
   }
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value)
-    update({ id: initialData._id, title: e.target.value || 'Untitled' })
+    await update({ id: initialData._id, title: e.target.value || 'Untitled' })
   }
 
   const onKeyDown = (e: React.KeyboardEvent) => {
