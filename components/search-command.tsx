@@ -47,7 +47,7 @@ const SearchCommand = () => {
     }
     document.addEventListener('keydown', down)
     return () => document.removeEventListener('keydown', down)
-  }, [])
+  }, [toggle])
 
   const onSelect = (id: string) => {
     router.push(`/documents/${id}`)

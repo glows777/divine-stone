@@ -10,7 +10,7 @@ import {
   Trash,
 } from 'lucide-react'
 import { useParams, usePathname, useRouter} from 'next/navigation'
-import React, { ElementRef, useEffect, useRef, useState } from 'react'
+import React, { ElementRef, useCallback, useEffect, useRef, useState } from 'react'
 import { useMediaQuery } from 'usehooks-ts'
 import { useMutation } from 'convex/react'
 
@@ -46,11 +46,30 @@ const Navigation = () => {
   const [isResetting, setIsResetting] = useState(false)
   const [isCollapsed, setIsCollapsed] = useState(isMobile)
 
+  const resetWidth = useCallback(() => {
+    if (sidebarRef.current && navbarRef.current) {
+      setIsCollapsed(false)
+      setIsResetting(true)
+
+      sidebarRef.current.style.width = isMobile ? '100%' : '240px'
+      navbarRef.current.style.setProperty(
+        'width',
+        isMobile ? '0' : 'calc(100% - 240px)'
+      )
+      navbarRef.current.style.setProperty('left', isMobile ? '100%' : '240px')
+
+      // * 为什么是 300
+      // * 因为 下面的 动画就是 300ms
+      // * 配合起来 则会在 300ms 后，移除这个 属性
+      setTimeout(() => setIsResetting(false), 300)
+    }
+  }, [isMobile])
+
   useEffect(() => {
     // * 如果是大小变化为移动端大小，则关闭侧边栏
     if (isMobile) collapse()
     else resetWidth()
-  }, [isMobile])
+  }, [isMobile, resetWidth])
 
   useEffect(() => {
     if (isMobile) collapse()
@@ -86,24 +105,7 @@ const Navigation = () => {
     document.removeEventListener('mouseup', handleMouseup)
   }
 
-  const resetWidth = () => {
-    if (sidebarRef.current && navbarRef.current) {
-      setIsCollapsed(false)
-      setIsResetting(true)
 
-      sidebarRef.current.style.width = isMobile ? '100%' : '240px'
-      navbarRef.current.style.setProperty(
-        'width',
-        isMobile ? '0' : 'calc(100% - 240px)'
-      )
-      navbarRef.current.style.setProperty('left', isMobile ? '100%' : '240px')
-
-      // * 为什么是 300
-      // * 因为 下面的 动画就是 300ms
-      // * 配合起来 则会在 300ms 后，移除这个 属性
-      setTimeout(() => setIsResetting(false), 300)
-    }
-  }
 
   const collapse = () => {
     if (sidebarRef.current && navbarRef.current) {

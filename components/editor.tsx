@@ -8,6 +8,7 @@ import '@blocknote/core/style.css'
 import { useEdgeStore } from '@/lib/edgestore'
 
 interface EditorProps {
+  // eslint-disable-next-line no-unused-vars
   onChange: (content: string) => void
   initialContent?: string
   editable?: boolean
